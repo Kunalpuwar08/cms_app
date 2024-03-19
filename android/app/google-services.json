@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734546340381",
+    "project_id": "cmsbackend-541ab",
+    "storage_bucket": "cmsbackend-541ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734546340381:android:7d18917025440ecf1f34f4",
+        "android_client_info": {
+          "package_name": "com.cms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz1RxpPCpwHMlqWGQxZ9VIXXwYcucWFi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
