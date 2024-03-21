@@ -12,6 +12,7 @@ import ListEmp from '../screen/Admin/Emp/ListEmp';
 import CreateEmp from '../screen/Admin/Emp/CreateEmp';
 import CreateAsset from '../screen/Admin/Asset/CreateAsset';
 import ListAsset from '../screen/Admin/Asset/ListAsset';
+import Profile from '../screen/Employee/Profile/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const AppNavigation = () => {
         <Stack.Screen name='ChangePassword' component={ChangePassword} />
         <Stack.Screen name='AdminHome' component={HomeAdmin} />
         <Stack.Screen name='EmployeeHome' component={HomeEmp} />
+        <Stack.Screen name='Profile' component={Profile} />
         {/* Leave */}
         <Stack.Screen name='AdminLeave' component={AdminLeave} />
         <Stack.Screen name='EmployeeLeave' component={EmpLeave} />

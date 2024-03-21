@@ -39,11 +39,11 @@ const ListAsset = () => {
     console.log(item);
     return (
       <TouchableOpacity style={styles.card} key={index}>
-        <Image source={{uri: item.imageUrl}} style={{height:100,width:100,backgroundColor:'red',resizeMode:'contain'}} />
-        <View style={{width:'45%'}}>
-            <Text>{item.name}</Text>
-            <Text>{item.description}</Text>
-            <Text>{item.brand}</Text>
+        <Image source={{uri: item.imageUrl}} style={styles.assetImg} />
+        <View style={{width: '45%'}}>
+          <Text>{item.name}</Text>
+          <Text>{item.description}</Text>
+          <Text>{item.brand}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -124,5 +124,10 @@ const styles = StyleSheet.create({
     borderRadius: scale(30),
     justifyContent: 'center',
     backgroundColor: Colors.blue,
+  },
+  assetImg: {
+    height: scale(100),
+    width: scale(100),
+    resizeMode: 'contain',
   },
 });

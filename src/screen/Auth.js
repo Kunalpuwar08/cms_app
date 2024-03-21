@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import {loginSvg} from '../assets';
 import {scale} from '../utils/Matrix';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Colors} from '../utils/Colors';
 import CInput from '../components/CInput';
 import CLoader from '../components/CLoader';
 import {useNavigation} from '@react-navigation/native';
 import httpService from '../utils/https';
-import {saveData} from '../components/CommonStorage';
+import {getData, saveData} from '../components/CommonStorage';
+import {UserAuthContext} from '../context/authContext';
 
 const Auth = () => {
   const navigation = useNavigation();
@@ -26,7 +27,8 @@ const Auth = () => {
   const onLogin = async () => {
     try {
       setLoading(true);
-      const data = {email: email, password: password};
+      const fcm = await getData('@fcm');
+      const data = {email: email, password: password, fcmToken: fcm};
 
       const responce = await httpService({
         method: 'post',
@@ -34,13 +36,13 @@ const Auth = () => {
         data: data,
       });
       setLoading(false);
-      console.log(responce.data,"responce.data>>>>>>>>>>>>>>>>>");
       await saveData('userToken', responce.data.token);
       await saveData('userData', responce.data.user);
+
       if (responce.data.user.role == 'admin') {
-        navigation.navigate('AdminHome');
+        navigation.replace('AdminHome');
       } else if (responce.data.user.role == 'employee') {
-        navigation.navigate('EmployeeHome');
+        navigation.replace('EmployeeHome');
       }
     } catch (error) {
       setLoading(false);
@@ -102,9 +104,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#64a5ff',
   },
   btnTxt: {
-    color: Colors.white,
-    fontSize: scale(18),
-    textTransform: 'uppercase',
     fontWeight: 'bold',
+    fontSize: scale(18),
+    color: Colors.white,
+    textTransform: 'uppercase',
   },
 });

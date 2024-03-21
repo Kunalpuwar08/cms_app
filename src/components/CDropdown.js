@@ -20,7 +20,7 @@ const CDropdown = ({label, data, placeholder,onValueChange,otherStyle}) => {
 
   return (
     <View style={styles.container}>
-      {renderLabel()}
+      {/* {renderLabel()} */}
       <Dropdown
         style={[styles.dropdown, isFocus && {borderColor: 'blue'},otherStyle]}
         placeholderStyle={styles.placeholderStyle}
@@ -65,13 +65,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: Colors.white,
+    color:Colors.black
   },
   icon: {
     marginRight: 5,
   },
   label: {
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     left: 22,
     top: 8,
     zIndex: 999,

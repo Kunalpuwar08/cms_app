@@ -14,7 +14,7 @@ const httpService = async options => {
     (options.headers = {...options.headers, ...(await getHeader())});
 
   const onSuccess = response => {
-    console.debug('Request Successful!', response);
+    // console.debug('Request Successful!', response);
     return response;
   };
 

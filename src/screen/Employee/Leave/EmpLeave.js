@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -8,6 +8,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
@@ -16,17 +17,21 @@ import CInput from '../../../components/CInput';
 import {Fonts} from '../../../utils/Fonts';
 import {scale} from '../../../utils/Matrix';
 import {bg, leaveImg} from '../../../assets';
-import {UserAuthContext} from '../../../context/authContext';
 import CDatePicker from '../../../components/CDatePicker';
 import CDropdown from '../../../components/CDropdown';
 import {Colors} from '../../../utils/Colors';
+import httpService from '../../../utils/https';
+import {useQuery} from '@tanstack/react-query';
+import {getEmployeeDetails} from '../../../apis';
 
 const EmpLeave = () => {
   const navigation = useNavigation();
+  const empQuery = useQuery({
+    queryKey: ['employee'],
+    queryFn: getEmployeeDetails,
+  });
 
-  const useUserAuthContext = () => useContext(UserAuthContext);
-  const {token} = useUserAuthContext();
-
+  const empData = empQuery.data?.data;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [reason, setReason] = useState('');
@@ -40,49 +45,39 @@ const EmpLeave = () => {
 
   const onBack = () => {
     navigation.goBack();
-  }
+  };
+
 
   const applyLeave = async () => {
-    let res = await getData('userAuth');
-    if (res !== null) {
-      const user = res.user;
-
-      const data = {
-        companyId: user?.companyId,
-        employeeId: user?.id,
-        employeeName: user?.name,
-        leaveType,
-        startDate,
-        endDate,
-        reason,
-      };
-
-      //   await axios
-      //     .post(`${API_URL}/applyleave`, data, {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         Authorization: token,
-      //       },
-      //     })
-      //     .then(res => {
-      //       Toast.show({
-      //         type: 'success',
-      //         text1: res.data.message,
-      //       });
-      //       navigation.goBack();
-      //     })
-      //     .catch(err => {
-      //       Toast.show({
-      //         type: 'error',
-      //         text1: err.message,
-      //       });
-      //       console.error(err);
-      //     });
+    const data = {
+      type: leaveType,
+      startDate,
+      endDate,
+      reason,
+      companyFcm: empData?.companyFcm,
+    };
+    try {
+      await httpService({
+        method: 'post',
+        url: '/applyleave',
+        data: data,
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Leave request sent successfully',
+      });
+      navigation.goBack();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'somthing went wrong',
+      });
     }
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      {empQuery.isLoading ? <ActivityIndicator size={'large'} /> : null}
       <ImageBackground style={styles.container} source={bg}>
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={onBack}>

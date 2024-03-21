@@ -1,23 +1,21 @@
 import {
   View,
   Text,
-  FlatList,
   StyleSheet,
+  ScrollView,
+  SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  ScrollView,
-  Platform,
-  SafeAreaView,
 } from 'react-native';
 import {bg} from '../../assets';
+import {Fonts} from '../../utils/Fonts';
 import {scale} from '../../utils/Matrix';
 import {Colors} from '../../utils/Colors';
-import React, {useContext, useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {Fonts} from '../../utils/Fonts';
 import httpService from '../../utils/https';
-import {UserAuthContext} from '../../context/authContext';
 import CommonCard from '../../components/CommonCard';
+import {useNavigation} from '@react-navigation/native';
+import {UserAuthContext} from '../../context/authContext';
+import React, {useContext, useEffect, useState} from 'react';
 
 const HomeEmp = () => {
   const navigation = useNavigation();
@@ -25,14 +23,6 @@ const HomeEmp = () => {
 
   const useUserAuthContext = () => useContext(UserAuthContext);
   const {userData} = useUserAuthContext();
-
-  const data = [
-    {id: 1, name: 'Profile', navigate: 'employeeprofile'},
-    {id: 2, name: 'Project', navigate: 'employeeprofile'},
-    {id: 3, name: 'Leave', navigate: 'employeeleave'},
-    {id: 4, name: 'Assets', navigate: 'employeeprofile'},
-    {id: 5, name: 'Timesheet', navigate: 'timesheet'},
-  ];
 
   useEffect(() => {
     getWorkingDays();
@@ -48,14 +38,14 @@ const HomeEmp = () => {
 
   return (
     <ScrollView scrollEnabled contentContainerStyle={{flexGrow: 1}}>
-        <SafeAreaView style={{flex:1}} />
+      <SafeAreaView style={{flex: 1}} />
       <ImageBackground source={bg} style={styles.container}>
         {/* header */}
         <View style={styles.titleContainer}>
           <Text style={styles.welcomeTxt}>
-            Welcome to {userData.companyName}
+            Welcome to {userData?.companyName}
           </Text>
-          <Text style={styles.nameTxt}>{userData.name}</Text>
+          <Text style={styles.nameTxt}>{userData?.name}</Text>
         </View>
 
         {/* box */}
@@ -77,33 +67,30 @@ const HomeEmp = () => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent:'space-between',
+            justifyContent: 'space-between',
             width: '90%',
             alignSelf: 'center',
-              flexWrap: 'wrap',
-            height: 'auto', 
+            flexWrap: 'wrap',
+            height: 'auto',
             overflow: 'hidden',
           }}>
           <CommonCard
-              name={'Profile'}
-              onPress={() => navigation.navigate('')}
-            />
-            <CommonCard
-              name={'Project'}
-              onPress={() => navigation.navigate('')}
-            />
-            <CommonCard
-              name={'Leave'}
-              onPress={() => navigation.navigate('EmployeeLeave')}
-            />
-            <CommonCard
-              name={'Assets'}
-              onPress={() => navigation.navigate('')}
-            />
-            <CommonCard
-              name={'Timesheet'}
-              onPress={() => navigation.navigate('')}
-            />
+            name={'Profile'}
+            onPress={() => navigation.navigate('Profile')}
+          />
+          <CommonCard
+            name={'Project'}
+            onPress={() => navigation.navigate('')}
+          />
+          <CommonCard
+            name={'Leave'}
+            onPress={() => navigation.navigate('EmployeeLeave')}
+          />
+          <CommonCard name={'Assets'} onPress={() => navigation.navigate('')} />
+          <CommonCard
+            name={'Timesheet'}
+            onPress={() => navigation.navigate('')}
+          />
         </View>
       </ImageBackground>
     </ScrollView>
@@ -142,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(12),
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
-    padding:scale(8)
+    padding: scale(8),
   },
   txtContainer: {
     width: '40%',

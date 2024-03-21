@@ -1,39 +1,33 @@
 import React, {createContext, useState, useEffect} from 'react';
-import httpService from '../utils/https';
 import {getData} from '../components/CommonStorage';
+import httpService from '../utils/https';
 
 export const UserAuthContext = createContext();
 
 const UserAuthProvider = ({children}) => {
-  const [token, setToken] = useState(null);
-  const [userData, setUserData] = useState([]);
+  const [fcm, setFcm] = useState('');
+  const [userData, setUserData] = useState();
+  const [empData, setEmpData] = useState();
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const token = await getData('userToken');
-        setToken(token);
+    async function getStoredData() {
+      const storedData = await getData('userData');
+      if (storedData) {
+        setUserData(storedData);
 
-        const sdata = await getData('userData');
-        const getID = sdata?._id;
-
-        const responce = await httpService({
+        const res = await httpService({
           method: 'get',
-          url: `/getEmp/${getID}`,
+          url: `/getEmp/${storedData?._id}`,
         });
 
-        console.log(responce?.data,"responce?.data>>>>>>>>>>>");
-
-        setUserData(responce?.data);
-      } catch (error) {
-        console.log(error, 'error context');
+        setEmpData(res.data);
       }
     }
-    fetchData();
+    getStoredData();
   }, []);
 
   return (
-    <UserAuthContext.Provider value={{token, userData}}>
+    <UserAuthContext.Provider value={{fcm, setFcm, userData, empData}}>
       {children}
     </UserAuthContext.Provider>
   );
