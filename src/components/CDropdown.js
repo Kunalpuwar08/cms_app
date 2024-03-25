@@ -1,30 +1,21 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Fonts} from '../utils/Fonts';
 import React, {useState} from 'react';
+import {scale} from '../utils/Matrix';
+import {Colors} from '../utils/Colors';
+import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { scale } from '../utils/Matrix';
-import { Colors } from '../utils/Colors';
 
-const CDropdown = ({label, data, placeholder,onValueChange,otherStyle}) => {
+const CDropdown = ({data, placeholder, onValueChange, otherStyle}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
-      );
-    }
-    return null;
-  };
-
   return (
     <View style={styles.container}>
-      {/* {renderLabel()} */}
       <Dropdown
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'},otherStyle]}
+        style={[styles.dropdown, isFocus && {borderColor: 'blue'}, otherStyle]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
+        itemTextStyle={styles.itemTxt}
         iconStyle={styles.iconStyle}
         data={data}
         maxHeight={scale(200)}
@@ -39,14 +30,6 @@ const CDropdown = ({label, data, placeholder,onValueChange,otherStyle}) => {
           setIsFocus(false);
           onValueChange(item.value);
         }}
-        // renderLeftIcon={() => (
-        //   <AntDesign
-        //     style={styles.icon}
-        //     color={isFocus ? 'blue' : 'black'}
-        //     name="Safety"
-        //     size={20}
-        //   />
-        // )}
       />
     </View>
   );
@@ -59,28 +42,28 @@ const styles = StyleSheet.create({
     padding: scale(16),
   },
   dropdown: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8,
+    borderWidth: 0.5,
+    height: scale(50),
+    color: Colors.black,
+    borderColor: Colors.grey,
+    paddingHorizontal: scale(8),
     backgroundColor: Colors.white,
-    color:Colors.black
   },
   icon: {
-    marginRight: 5,
+    marginRight: scale(5),
   },
   label: {
-    position: 'absolute',
-    backgroundColor: Colors.white,
-    left: 22,
     top: 8,
+    left: 22,
     zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    fontSize: scale(14),
+    position: 'absolute',
+    paddingHorizontal: scale(8),
+    backgroundColor: Colors.white,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: scale(14),
     color: Colors.black,
   },
   selectedTextStyle: {
@@ -89,11 +72,16 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   iconStyle: {
-    width: 20,
-    height: 20,
+    width: scale(20),
+    height: scale(20),
   },
   inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    height: scale(40),
+    fontSize: scale(16),
+  },
+  itemTxt: {
+    color: Colors.black,
+    fontSize: scale(13),
+    fontFamily: Fonts.AntaRegular,
   },
 });

@@ -6,8 +6,18 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import {bg} from '../../assets';
+import {
+  AssetIcon,
+  LeaveIcon,
+  ProfileIcon,
+  ProjectIcon,
+  TimesheetIcon,
+  TodoIcon,
+  bg,
+  working,
+} from '../../assets';
 import {Fonts} from '../../utils/Fonts';
 import {scale} from '../../utils/Matrix';
 import {Colors} from '../../utils/Colors';
@@ -50,6 +60,7 @@ const HomeEmp = () => {
 
         {/* box */}
         <View style={styles.box}>
+          <Image source={working} style={styles.imgContainer} />
           <View style={styles.txtContainer}>
             <Text style={styles.day}>Day: {chartData.todayDayCount}</Text>
             <Text style={styles.day}>
@@ -60,36 +71,40 @@ const HomeEmp = () => {
 
         {/* Tools */}
         <View style={styles.toolsContainer}>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>See All Tools </Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity> */}
+            <Text style={styles.seeAll}>Tools </Text>
+          {/* </TouchableOpacity> */}
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '90%',
-            alignSelf: 'center',
-            flexWrap: 'wrap',
-            height: 'auto',
-            overflow: 'hidden',
-          }}>
+        <View style={styles.cardContainer}>
           <CommonCard
             name={'Profile'}
+            source={ProfileIcon}
             onPress={() => navigation.navigate('Profile')}
           />
           <CommonCard
             name={'Project'}
+            source={ProjectIcon}
             onPress={() => navigation.navigate('')}
           />
           <CommonCard
             name={'Leave'}
+            source={LeaveIcon}
             onPress={() => navigation.navigate('EmployeeLeave')}
           />
-          <CommonCard name={'Assets'} onPress={() => navigation.navigate('')} />
+          <CommonCard
+            name={'Assets'}
+            source={AssetIcon}
+            onPress={() => navigation.navigate('')}
+          />
           <CommonCard
             name={'Timesheet'}
+            source={TimesheetIcon}
             onPress={() => navigation.navigate('')}
+          />
+          <CommonCard
+            name={'Todo'}
+            source={TodoIcon}
+            onPress={() => navigation.navigate('TodoList')}
           />
         </View>
       </ImageBackground>
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
   box: {
     width: '90%',
     elevation: 6,
+    padding: scale(8),
     height: scale(120),
     overflow: 'hidden',
     alignSelf: 'center',
@@ -129,10 +145,13 @@ const styles = StyleSheet.create({
     borderRadius: scale(12),
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
-    padding: scale(8),
+  },
+  imgContainer:{
+    width:'40%',
+    resizeMode:'contain',
   },
   txtContainer: {
-    width: '40%',
+    width: '50%',
   },
   day: {
     color: Colors.blue,
@@ -151,5 +170,15 @@ const styles = StyleSheet.create({
     fontSize: scale(16),
     color: Colors.white,
     fontFamily: Fonts.AntaRegular,
+  },
+  cardContainer: {
+    width: '90%',
+    height: 'auto',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // marginTop:scale(12)
   },
 });

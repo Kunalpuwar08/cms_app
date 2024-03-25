@@ -1,37 +1,37 @@
 import {
-  FlatList,
-  Image,
-  ImageBackground,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  Image,
+  FlatList,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
-import {UserAuthContext} from '../../../context/authContext';
-import {bg, profileImg} from '../../../assets';
+import {Fonts} from '../../../utils/Fonts';
 import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
-import {Fonts} from '../../../utils/Fonts';
 import httpService from '../../../utils/https';
+import {bg, profileImg} from '../../../assets';
+import React, {useEffect, useState} from 'react';
+import CLoader from '../../../components/CLoader';
+import {useNavigation} from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const ListEmp = () => {
   const navigation = useNavigation();
 
-  const useUserAuthContext = () => useContext(UserAuthContext);
-  const {token} = useUserAuthContext();
-
+  const [loading, setLoading] = useState(false);
   const [listOfEmployee, setListOfEmployee] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     async function callApi() {
       const responce = await httpService({
         method: 'get',
         url: '/getEmp',
       });
       setListOfEmployee(responce.data);
+      setLoading(false);
     }
     callApi();
   }, []);
@@ -75,6 +75,8 @@ const ListEmp = () => {
         onPress={() => navigation.navigate('CreateEmp')}>
         <AntDesign name="plus" size={scale(18)} color={Colors.white} />
       </TouchableOpacity>
+
+      <CLoader visible={loading} />
     </ImageBackground>
   );
 };
@@ -87,12 +89,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   header: {
+    width: '90%',
     height: scale(60),
+    padding: scale(12),
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: scale(12),
-    width: '90%',
-    alignSelf: 'center',
   },
   heading: {
     fontSize: scale(18),
@@ -104,15 +106,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   card: {
-    height: scale(150),
-    backgroundColor: Colors.white,
-    marginVertical: scale(12),
-    borderRadius: scale(12),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: scale(20),
     width: '100%',
+    padding: scale(20),
+    height: scale(150),
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: scale(12),
+    marginVertical: scale(12),
+    backgroundColor: Colors.white,
+    justifyContent: 'space-between',
   },
   name: {
     fontSize: scale(14),
@@ -126,19 +128,19 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.AntaRegular,
   },
   img: {
-    height: scale(100),
     width: scale(100),
-    borderRadius: scale(50),
+    height: scale(100),
     resizeMode: 'contain',
+    borderRadius: scale(50),
   },
   floatBtn: {
-    position: 'absolute',
-    bottom: scale(10),
     right: scale(10),
-    height: scale(60),
     width: scale(60),
-    borderRadius: scale(30),
+    height: scale(60),
+    bottom: scale(10),
+    position: 'absolute',
     alignItems: 'center',
+    borderRadius: scale(30),
     justifyContent: 'center',
     backgroundColor: Colors.blue,
   },

@@ -13,6 +13,9 @@ import CreateEmp from '../screen/Admin/Emp/CreateEmp';
 import CreateAsset from '../screen/Admin/Asset/CreateAsset';
 import ListAsset from '../screen/Admin/Asset/ListAsset';
 import Profile from '../screen/Employee/Profile/Profile';
+import Notification from '../screen/Admin/Notification/Notification';
+import ListLeavesEmp from '../screen/Employee/Leave/ListLeavesEmp';
+import TodoList from '../screen/Employee/Todo/TodoList';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,9 +28,12 @@ const AppNavigation = () => {
         <Stack.Screen name='AdminHome' component={HomeAdmin} />
         <Stack.Screen name='EmployeeHome' component={HomeEmp} />
         <Stack.Screen name='Profile' component={Profile} />
+        <Stack.Screen name='Notification' component={Notification} />
+        <Stack.Screen name='TodoList' component={TodoList} />
         {/* Leave */}
         <Stack.Screen name='AdminLeave' component={AdminLeave} />
         <Stack.Screen name='EmployeeLeave' component={EmpLeave} />
+        <Stack.Screen name='EmployeeLeaveList' component={ListLeavesEmp} />
         {/* Employee */}
         <Stack.Screen name='ListEmp' component={ListEmp} />
         <Stack.Screen name='CreateEmp' component={CreateEmp} />

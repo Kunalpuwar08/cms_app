@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
+import {scale} from '../../../utils/Matrix';
+import {Colors} from '../../../utils/Colors';
 import Toast from 'react-native-toast-message';
+import CInput from '../../../components/CInput';
+import {bg, createEmpImg} from '../../../assets';
+import CButton from '../../../components/CButton';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {bg, createEmpImg} from '../../../assets';
-import {Colors} from '../../../utils/Colors';
-import {scale} from '../../../utils/Matrix';
-import CInput from '../../../components/CInput';
 
 const CreateEmp = () => {
   const navigation = useNavigation();
@@ -52,20 +53,20 @@ const CreateEmp = () => {
       </View>
       <ScrollView style={styles.wrapper}>
         <Image source={createEmpImg} style={styles.img} />
+
         <CInput
           label={'Name'}
           otherStyle={styles.input}
           onChangeText={txt => setName(txt)}
         />
+
         <CInput
           label={'Email'}
           otherStyle={styles.input}
           onChangeText={txt => setEmail(txt)}
         />
 
-        <TouchableOpacity style={styles.btn} onPress={create}>
-          <Text style={styles.btnTxt}>Create</Text>
-        </TouchableOpacity>
+        <CButton name={'Create'} onPress={create} />
       </ScrollView>
     </ImageBackground>
   );
@@ -104,22 +105,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
-  },
-  btn: {
-    width: '80%',
-    height: scale(40),
     alignSelf: 'center',
-    alignItems: 'center',
-    borderRadius: scale(4),
-    justifyContent: 'center',
-    marginVertical: scale(8),
-    backgroundColor: '#027BFE',
-  },
-  btnTxt: {
-    fontWeight: 'bold',
-    fontSize: scale(16),
-    color: Colors.white,
-    textTransform: 'uppercase',
   },
   img: {
     width: '90%',

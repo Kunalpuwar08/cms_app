@@ -8,7 +8,6 @@ import {
   ImageBackground,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
@@ -20,15 +19,26 @@ import {bg, leaveImg} from '../../../assets';
 import CDatePicker from '../../../components/CDatePicker';
 import CDropdown from '../../../components/CDropdown';
 import {Colors} from '../../../utils/Colors';
-import httpService from '../../../utils/https';
-import {useQuery} from '@tanstack/react-query';
-import {getEmployeeDetails} from '../../../apis';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {applyEmpLeave, getEmployeeDetails} from '../../../apis';
 
 const EmpLeave = () => {
   const navigation = useNavigation();
+
   const empQuery = useQuery({
     queryKey: ['employee'],
     queryFn: getEmployeeDetails,
+  });
+
+  const EmpLeaveMutation = useMutation({
+    mutationFn: applyEmpLeave,
+    onSuccess: data => {
+      Toast.show({
+        type: 'success',
+        text1: 'Leave request sent successfully',
+      });
+      onBack();
+    },
   });
 
   const empData = empQuery.data?.data;
@@ -47,7 +57,6 @@ const EmpLeave = () => {
     navigation.goBack();
   };
 
-
   const applyLeave = async () => {
     const data = {
       type: leaveType,
@@ -56,34 +65,21 @@ const EmpLeave = () => {
       reason,
       companyFcm: empData?.companyFcm,
     };
-    try {
-      await httpService({
-        method: 'post',
-        url: '/applyleave',
-        data: data,
-      });
-      Toast.show({
-        type: 'success',
-        text1: 'Leave request sent successfully',
-      });
-      navigation.goBack();
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'somthing went wrong',
-      });
-    }
+
+    EmpLeaveMutation.mutate(data);
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      {empQuery.isLoading ? <ActivityIndicator size={'large'} /> : null}
       <ImageBackground style={styles.container} source={bg}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={onBack}>
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={onBack}>
             <AntDesign name={'left'} size={scale(18)} color={Colors.white} />
+            <Text style={styles.headerTitle}>Employee Leave</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Employee Leave</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('EmployeeLeaveList')}>
+            <AntDesign name='ellipsis1' size={scale(18)} color={Colors.white} />
+          </TouchableOpacity>
         </View>
         <ScrollView>
           <Image source={leaveImg} style={styles.img} />
@@ -132,6 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: scale(16),
+    justifyContent:'space-between'
   },
   headerTitle: {
     color: Colors.white,

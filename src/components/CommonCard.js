@@ -1,13 +1,13 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {scale} from '../utils/Matrix';
 import {Colors} from '../utils/Colors';
 import {Fonts} from '../utils/Fonts';
 
-const CommonCard = ({onPress, name}) => {
+const CommonCard = ({onPress, name,source}) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <View style={styles.avtar} />
+      <Image source={source} style={styles.avtar} />
       <Text style={styles.card_name}>{name}</Text>
     </TouchableOpacity>
   );
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: scale(40),
     marginBottom: scale(12),
-    backgroundColor: '#8641f4',
+    resizeMode:'contain'
   },
   card_name: {
     fontSize: scale(14),

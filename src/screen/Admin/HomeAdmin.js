@@ -11,9 +11,18 @@ import React from 'react';
 import {Fonts} from '../../utils/Fonts';
 import {scale} from '../../utils/Matrix';
 import {Colors} from '../../utils/Colors';
-import {bg, employeeImg} from '../../assets';
+import {
+  AssetIcon,
+  LeaveIcon,
+  ProfileIcon,
+  TimesheetIcon,
+  bg,
+  employeeImg,
+} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import CHeaderCard from '../../components/CHeaderCard';
 
 const HomeAdmin = () => {
   const navigation = useNavigation();
@@ -21,17 +30,19 @@ const HomeAdmin = () => {
   return (
     <SafeAreaView style={styles.main}>
       <ImageBackground source={bg} style={styles.container}>
-      {/* header */}
+        {/* header */}
         <View style={styles.header}>
           <Text style={styles.title}>CMS</Text>
           <View style={styles.headerBtnContainer}>
             <TouchableOpacity style={styles.headerBtn}>
-              <Ionicons name="search-outline" size={24} color={Colors.white} />
+              <AntDesign name="logout" size={scale(20)} color={Colors.white} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.headerBtn}>
+            <TouchableOpacity
+              style={styles.headerBtn}
+              onPress={() => navigation.navigate('Notification')}>
               <Ionicons
                 name="notifications-outline"
-                size={24}
+                size={scale(20)}
                 color={Colors.white}
               />
             </TouchableOpacity>
@@ -39,34 +50,26 @@ const HomeAdmin = () => {
         </View>
 
         <View style={styles.cardConatiner}>
-          
-          <View style={styles.cardWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('TimesheetList')}
-              style={styles.card(Colors.white)}></TouchableOpacity>
-            <Text style={styles.cardTxt}>Timesheet</Text>
-          </View>
-
-          <View style={styles.cardWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ListEmp')}
-              style={styles.card(Colors.white)}></TouchableOpacity>
-            <Text style={styles.cardTxt}>Employee</Text>
-          </View>
-
-          <View style={styles.cardWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ListAsset')}
-              style={styles.card(Colors.white)}></TouchableOpacity>
-            <Text style={styles.cardTxt}>Asset</Text>
-          </View>
-
-          <View style={styles.cardWrapper}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AdminLeave')}
-              style={styles.card(Colors.white)}></TouchableOpacity>
-            <Text style={styles.cardTxt}>Leave</Text>
-          </View>
+          <CHeaderCard
+            name={'Timesheet'}
+            navigate={'Timesheet'}
+            source={TimesheetIcon}
+          />
+          <CHeaderCard
+            name={'Employee'}
+            navigate={'ListEmp'}
+            source={ProfileIcon}
+          />
+          <CHeaderCard
+            name={'Asset'}
+            navigate={'ListAsset'}
+            source={AssetIcon}
+          />
+          <CHeaderCard
+            name={'Leave'}
+            navigate={'AdminLeave'}
+            source={LeaveIcon}
+          />
         </View>
 
         {/*  */}
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     height: scale(100),
     overflow: 'hidden',
+    backgroundColor: 'black',
   },
   cardWrapper: {
     padding: scale(12),

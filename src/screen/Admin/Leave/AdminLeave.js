@@ -16,6 +16,8 @@ import {Colors} from '../../../utils/Colors';
 import {Fonts} from '../../../utils/Fonts';
 import httpService from '../../../utils/https';
 import {useNavigation} from '@react-navigation/native';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {listLeaves, updateLeaveRequest} from '../../../apis';
 
 const AdminLeave = () => {
   const navigation = useNavigation();
@@ -24,17 +26,29 @@ const AdminLeave = () => {
   const [pendingData, setPendingData] = useState([]);
   const [completedData, setCompletedData] = useState([]);
 
+  const empQuery = useQuery({
+    queryKey: ['leaves'],
+    queryFn: listLeaves,
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateLeaveRequest,
+    onSuccess: data => {
+      console.log('Succes Data :', data);
+    },
+  });
+
   const getListRequest = useCallback(async () => {
     try {
-      const res = await httpService({
-        method: 'get',
-        url: '/listleaves',
-      });
+      const listData = empQuery.data;
+      setApiData(listData?.data);
 
-      setApiData(res.data);
-      let pendingdata = res.data.filter((i, e) => i.status === 'pending');
+      let pendingdata = listData?.data.filter((i, e) => i.status === 'pending');
       setPendingData(pendingdata);
-      let completeddata = res.data.filter((i, e) => i.status !== 'pending');
+
+      let completeddata = listData?.data.filter(
+        (i, e) => i.status !== 'pending',
+      );
       setCompletedData(completeddata);
     } catch (error) {
       console.log(error, 'Error in fetching Data');
@@ -90,23 +104,18 @@ const AdminLeave = () => {
   }, []);
 
   const updateLeave = async (item, action) => {
-    try {
-      const leaveId = item?._id;
-      await httpService({
-        method: 'post',
-        url: `/updateleave/${leaveId}`,
-        data: {status: action, fcmToken: item.employeeFcm},
-      });
-      Toast.show({
-        type: 'success',
-        text1: `leave req for ${item?.employeeName} is ${action}`,
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: `somthing went wrong`,
-      });
-    }
+    updateMutation.mutate(item, action);
+    // try {
+    //   Toast.show({
+    //     type: 'success',
+    //     text1: `leave req for ${item?.employeeName} is ${action}`,
+    //   });
+    // } catch (error) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: `somthing went wrong`,
+    //   });
+    // }
   };
 
   const goBack = () => {
