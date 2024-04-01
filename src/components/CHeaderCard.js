@@ -3,15 +3,15 @@ import {Fonts} from '../utils/Fonts';
 import {scale} from '../utils/Matrix';
 import {Colors} from '../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const CHeaderCard = ({name, navigate,source}) => {
+const CHeaderCard = ({name, navigate, source}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={styles.cardWrapper}
       onPress={() => navigation.navigate(navigate)}>
-      <Image source={source} style={styles.card} />
+      {source && <Image source={source} style={styles.card} />}
       <Text style={styles.cardTxt}>{name}</Text>
     </TouchableOpacity>
   );
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    elevation: 6,
     width: scale(60),
     height: scale(60),
     borderRadius: scale(30),

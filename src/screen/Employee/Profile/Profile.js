@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {bg} from '../../../assets';
 import {Fonts} from '../../../utils/Fonts';
 import {scale} from '../../../utils/Matrix';
@@ -20,6 +20,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import httpService from '../../../utils/https';
 import Toast from 'react-native-toast-message';
 import {deleteData} from '../../../components/CommonStorage';
+import CLoader from '../../../components/CLoader';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -30,14 +31,27 @@ const Profile = () => {
     queryFn: getEmployeeDetails,
   });
 
-  const {name, email, companyName, address, phone, _id, role} =
-    empQuery.data?.data || {};
+  // const {name, email, companyName, address, phone, _id, role} =
+  //   empQuery.data?.data || {};
 
-  const [empName, setName] = useState(name);
-  const [empEmail, setEmail] = useState(email);
-  const [empComp, setComp] = useState(companyName);
-  const [empPhone, setPhone] = useState(phone);
-  const [empAddress, setAddress] = useState(address);
+  useEffect(() => {
+    if (!empQuery.isLoading && empQuery.isSuccess) {
+      const {name, email, companyName, address, phone, _id, role} =
+        empQuery.data?.data || {};
+
+      setName(name);
+      setEmail(email);
+      setComp(companyName);
+      setPhone(phone);
+      setAddress(address);
+    }
+  }, [empQuery.isSuccess]);
+
+  const [empName, setName] = useState();
+  const [empEmail, setEmail] = useState();
+  const [empComp, setComp] = useState();
+  const [empPhone, setPhone] = useState();
+  const [empAddress, setAddress] = useState();
 
   const onBack = () => {
     navigation.goBack();
@@ -75,6 +89,7 @@ const Profile = () => {
 
   const onLogout = async () => {
     try {
+      const {_id, role} = empQuery.data?.data || {};
       const data = {userId: _id, userType: role};
       await httpService({
         method: 'post',
@@ -161,6 +176,8 @@ const Profile = () => {
             <Text style={styles.btnTxt(Colors.black)}>Logout</Text>
           </TouchableOpacity>
         </ScrollView>
+
+        <CLoader visible={empQuery.isLoading} />
       </ImageBackground>
     </SafeAreaView>
   );

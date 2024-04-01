@@ -3,9 +3,9 @@ import React from 'react';
 import { scale } from '../utils/Matrix';
 import { Colors } from '../utils/Colors';
 
-const CButton = ({name, onPress}) => {
+const CButton = ({name, onPress,otherStyle}) => {
   return (
-    <TouchableOpacity style={styles.btn} onPress={onPress}>
+    <TouchableOpacity style={[styles.btn,otherStyle]} onPress={onPress}>
       <Text style={styles.btnTxt}>{name}</Text>
     </TouchableOpacity>
   );

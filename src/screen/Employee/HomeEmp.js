@@ -84,7 +84,7 @@ const HomeEmp = () => {
           <CommonCard
             name={'Project'}
             source={ProjectIcon}
-            onPress={() => navigation.navigate('')}
+            onPress={() => navigation.navigate('ListProject')}
           />
           <CommonCard
             name={'Leave'}
@@ -94,12 +94,12 @@ const HomeEmp = () => {
           <CommonCard
             name={'Assets'}
             source={AssetIcon}
-            onPress={() => navigation.navigate('')}
+            onPress={() => navigation.navigate('ListAssetEmp')}
           />
           <CommonCard
             name={'Timesheet'}
             source={TimesheetIcon}
-            onPress={() => navigation.navigate('')}
+            onPress={() => navigation.navigate('ListTimesheet')}
           />
           <CommonCard
             name={'Todo'}

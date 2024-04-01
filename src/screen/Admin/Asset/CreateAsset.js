@@ -1,33 +1,30 @@
 import {
   Text,
   View,
+  Image,
   StyleSheet,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity,
   ImageBackground,
-  Image,
-  SafeAreaView,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera} from 'react-native-image-picker';
 
 import Toast from 'react-native-toast-message';
-import {UserAuthContext} from '../../../context/authContext';
 import {bg} from '../../../assets';
 import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
 import CInput from '../../../components/CInput';
 import httpService from '../../../utils/https';
+import CButton from '../../../components/CButton';
 
 const CreateAsset = () => {
   const navigation = useNavigation();
-
-  const useUserAuthContext = () => useContext(UserAuthContext);
-  const {token} = useUserAuthContext();
 
   const [imgObj, setImgObj] = useState();
   const [name, setName] = useState('');
@@ -88,8 +85,6 @@ const CreateAsset = () => {
         headers: {'Content-Type': 'multipart/form-data'},
       });
 
-      console.log(res.data, 'Data>>>>>>>>>>>>>>>>>>>');
-
       Toast.show({
         type: 'success',
         text1: 'Asset created successfully',
@@ -148,9 +143,7 @@ const CreateAsset = () => {
             onChangeText={txt => setDescription(txt)}
           />
 
-          <TouchableOpacity style={styles.btn} onPress={onCreateAsset}>
-            <Text style={styles.btnTxt}>Add Asset</Text>
-          </TouchableOpacity>
+          <CButton name={'Add Asset'} onPress={onCreateAsset} />
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>

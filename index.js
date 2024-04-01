@@ -1,6 +1,8 @@
 /**
  * @format
  */
+import { decode } from 'base-64';
+global.atob = decode;
 
 import {AppRegistry} from 'react-native';
 import App from './App';

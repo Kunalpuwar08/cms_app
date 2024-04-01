@@ -16,6 +16,9 @@ import {bg, createEmpImg} from '../../../assets';
 import CButton from '../../../components/CButton';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useMutation} from '@tanstack/react-query';
+import {createEmpCall} from '../../../apis';
+import CHeader from '../../../components/CHeader';
 
 const CreateEmp = () => {
   const navigation = useNavigation();
@@ -23,34 +26,33 @@ const CreateEmp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const goBack = () => {
-    navigation.goBack();
-  };
+  const createEmpMutation = useMutation({
+    mutationFn: createEmpCall,
+    onSuccess: data => {
+      console.log('Succes Data :', data);
+      Toast.show({
+        type: 'success',
+        text1: 'Employee Created Successfully',
+      });
+      navigation.goBack();
+    },
+    onError: err => {
+      console.log(err.data, 'error in api call>>>>>>>>>>>');
+      Toast.show({
+        type: 'success',
+        text1: err.message,
+      });
+    },
+  });
 
   const create = async () => {
     const data = {name, email};
-
-    await httpService({
-      method: 'post',
-      url: '/createemp',
-      data: data,
-    });
-
-    Toast.show({
-      type: 'success',
-      text2: 'Employee created successfully',
-    });
-    goBack();
+    createEmpMutation.mutate(data);
   };
 
   return (
     <ImageBackground source={bg} style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.leftBtn} onPress={goBack}>
-          <AntDesign name="left" color={Colors.white} size={scale(18)} />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Create Employee</Text>
-      </View>
+      <CHeader title={'Create Employee'} />
       <ScrollView style={styles.wrapper}>
         <Image source={createEmpImg} style={styles.img} />
 

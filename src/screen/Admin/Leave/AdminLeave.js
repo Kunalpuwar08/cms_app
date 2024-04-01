@@ -14,10 +14,10 @@ import {bg} from '../../../assets';
 import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
 import {Fonts} from '../../../utils/Fonts';
-import httpService from '../../../utils/https';
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {listLeaves, updateLeaveRequest} from '../../../apis';
+import CLoader from '../../../components/CLoader';
 
 const AdminLeave = () => {
   const navigation = useNavigation();
@@ -42,6 +42,7 @@ const AdminLeave = () => {
     try {
       const listData = empQuery.data;
       setApiData(listData?.data);
+      console.log();
 
       let pendingdata = listData?.data.filter((i, e) => i.status === 'pending');
       setPendingData(pendingdata);
@@ -53,7 +54,7 @@ const AdminLeave = () => {
     } catch (error) {
       console.log(error, 'Error in fetching Data');
     }
-  }, []);
+  }, [empQuery.isLoading]);
 
   useEffect(() => {
     getListRequest();
@@ -104,18 +105,7 @@ const AdminLeave = () => {
   }, []);
 
   const updateLeave = async (item, action) => {
-    updateMutation.mutate(item, action);
-    // try {
-    //   Toast.show({
-    //     type: 'success',
-    //     text1: `leave req for ${item?.employeeName} is ${action}`,
-    //   });
-    // } catch (error) {
-    //   Toast.show({
-    //     type: 'error',
-    //     text1: `somthing went wrong`,
-    //   });
-    // }
+    updateMutation.mutate({item, action});
   };
 
   const goBack = () => {
@@ -159,6 +149,8 @@ const AdminLeave = () => {
             keyExtractor={(item, index) => item.id}
           />
         )}
+
+        <CLoader visible={empQuery.isLoading} />
       </View>
     </ImageBackground>
   );

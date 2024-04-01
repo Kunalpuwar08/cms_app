@@ -4,8 +4,9 @@ import {bg} from '../assets';
 import {Fonts} from '../utils/Fonts';
 import {scale} from '../utils/Matrix';
 import {Colors} from '../utils/Colors';
-import {getData} from '../components/CommonStorage';
+import {getData, deleteData} from '../components/CommonStorage';
 import {useNavigation} from '@react-navigation/native';
+import {jwtDecode} from 'jwt-decode';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -13,12 +14,22 @@ const SplashScreen = () => {
     async function checkNav() {
       const token = await getData('userToken');
       const userData = await getData('userData');
+
       if (token) {
-        userData.isPasswordChanged ?(
-        userData.role === 'admin'
-          ? navigation.replace('AdminHome')
-          : navigation.replace('EmployeeHome')):
-          navigation.navigate("ChangePassword")
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime) {
+          console.log('Token has expired');
+          await deleteData('userToken');
+          await deleteData('userData');
+          navigation.replace('Auth');
+        } else {
+          userData.isPasswordChanged
+            ? userData.role === 'admin'
+              ? navigation.replace('AdminHome')
+              : navigation.replace('EmployeeHome')
+            : navigation.navigate('ChangePassword');
+        }
       } else {
         navigation.replace('Auth');
       }

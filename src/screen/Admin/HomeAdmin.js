@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Fonts} from '../../utils/Fonts';
 import {scale} from '../../utils/Matrix';
 import {Colors} from '../../utils/Colors';
@@ -15,7 +15,7 @@ import {
   AssetIcon,
   LeaveIcon,
   ProfileIcon,
-  TimesheetIcon,
+  ProjectIcon,
   bg,
   employeeImg,
 } from '../../assets';
@@ -23,9 +23,24 @@ import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CHeaderCard from '../../components/CHeaderCard';
+import {dashboardCall} from '../../apis';
+import {useQuery} from '@tanstack/react-query';
 
 const HomeAdmin = () => {
   const navigation = useNavigation();
+
+  const [listData, setListData] = useState([]);
+
+  const dashboardQuery = useQuery({
+    queryKey: ['dashboard'],
+    queryFn: dashboardCall,
+  });
+
+  useEffect(() => {
+    setListData(dashboardQuery.data?.data);
+  }, [dashboardQuery?.isLoading]);
+
+  console.log(listData);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -51,9 +66,9 @@ const HomeAdmin = () => {
 
         <View style={styles.cardConatiner}>
           <CHeaderCard
-            name={'Timesheet'}
-            navigate={'Timesheet'}
-            source={TimesheetIcon}
+            name={'Project'}
+            navigate={'ListAdminProject'}
+            source={ProjectIcon}
           />
           <CHeaderCard
             name={'Employee'}
@@ -76,20 +91,17 @@ const HomeAdmin = () => {
         <View style={styles.boxContainer}>
           <Image source={employeeImg} style={{width: '50%', height: '90%'}} />
           <View style={{width: '49%'}}>
-            <Text style={styles.cardTitle}>Total Employees:</Text>
-            <Text style={styles.cardTitle}>With Project: {0}</Text>
-            <Text style={styles.cardTitle}>On Bench: {0}</Text>
+            <Text style={styles.cardTitle}>
+              Total Employees: {listData?.employeeCount}
+            </Text>
+            <Text style={styles.cardTitle}>
+              Projects: {listData?.projectCount}
+            </Text>
+            <Text style={styles.cardTitle}>Assets: {listData?.assetCount}</Text>
+            <Text style={styles.cardTitle}>
+              on Leave: {listData?.activeLeaveCount}
+            </Text>
           </View>
-        </View>
-
-        {/*  */}
-        <View style={styles.boxContainer}>
-          <View style={{width: '50%'}}>
-            <Text style={styles.cardTitle}>Total Projects:</Text>
-            <Text style={styles.cardTitle}>on going Project: {0}</Text>
-            <Text style={styles.cardTitle}>finished project: {0}</Text>
-          </View>
-          <Image source={employeeImg} style={{width: '50%', height: '90%'}} />
         </View>
       </ImageBackground>
     </SafeAreaView>

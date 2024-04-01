@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 // import {Fonts} from '../utils/Fonts';
 import {Colors} from '../utils/Colors';
 import {scale} from '../utils/Matrix';
+import { Fonts } from '../utils/Fonts';
 
 const CInput = ({
   label,
@@ -67,12 +68,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   input: {
-    // alignSelf: 'center',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderBottomWidth: 0.5,
     padding: scale(12),
     borderRadius: scale(8),
     color: Colors.black,
-    // fontFamily: Fonts.AntaRegular,
+    fontFamily: Fonts.AntaRegular,
   },
 });

@@ -16,6 +16,12 @@ import Profile from '../screen/Employee/Profile/Profile';
 import Notification from '../screen/Admin/Notification/Notification';
 import ListLeavesEmp from '../screen/Employee/Leave/ListLeavesEmp';
 import TodoList from '../screen/Employee/Todo/TodoList';
+import ListProject from '../screen/Employee/Project/ListProject';
+import CreateProject from '../screen/Admin/Project/CreateProject';
+import ListAssets from '../screen/Employee/Asset/ListAssets';
+import CreateTimesheet from '../screen/Employee/Timesheet/CreateTimesheet';
+import ListTimesheet from '../screen/Employee/Timesheet/ListTimesheet';
+import ListAdminProjects from '../screen/Admin/Project/ListAdminProjects';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +46,14 @@ const AppNavigation = () => {
         {/* Asset */}
         <Stack.Screen name='ListAsset' component={ListAsset} />
         <Stack.Screen name='CreateAsset' component={CreateAsset} />
+        <Stack.Screen name='ListAssetEmp' component={ListAssets} />
+        {/* Project */}
+        <Stack.Screen name='ListAdminProject' component={ListAdminProjects} />
+        <Stack.Screen name='ListProject' component={ListProject} />
+        <Stack.Screen name='CreateProject' component={CreateProject} />
+        {/* Timesheet */}
+        <Stack.Screen name='CreateTimesheet' component={CreateTimesheet} />
+        <Stack.Screen name='ListTimesheet' component={ListTimesheet} />
 
     </Stack.Navigator>
   )

@@ -5,7 +5,7 @@ import {Colors} from '../utils/Colors';
 import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
-const CDropdown = ({data, placeholder, onValueChange, otherStyle}) => {
+const CDropdown = ({data, placeholder, onValueChange, otherStyle,setSelectedItem}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -29,6 +29,7 @@ const CDropdown = ({data, placeholder, onValueChange, otherStyle}) => {
           setValue(item.value);
           setIsFocus(false);
           onValueChange(item.value);
+          setSelectedItem && setSelectedItem(item)
         }}
       />
     </View>
@@ -40,6 +41,7 @@ export default CDropdown;
 const styles = StyleSheet.create({
   container: {
     padding: scale(16),
+    width:'100%'
   },
   dropdown: {
     borderRadius: 8,
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.grey,
     paddingHorizontal: scale(8),
     backgroundColor: Colors.white,
+    width:'100%'
   },
   icon: {
     marginRight: scale(5),

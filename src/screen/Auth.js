@@ -39,10 +39,14 @@ const Auth = () => {
       await saveData('userToken', responce.data.token);
       await saveData('userData', responce.data.user);
 
-      if (responce.data.user.role == 'admin') {
-        navigation.replace('AdminHome');
-      } else if (responce.data.user.role == 'employee') {
-        navigation.replace('EmployeeHome');
+      if(responce.data.user.isPasswordChanged == true){ 
+        if (responce.data.user.role == 'admin') {
+          navigation.replace('AdminHome');
+        } else if (responce.data.user.role == 'employee') {
+          navigation.replace('EmployeeHome');
+        }
+      }else{
+        navigation.replace('ChangePassword');
       }
     } catch (error) {
       setLoading(false);
@@ -64,6 +68,7 @@ const Auth = () => {
             label={'Password'}
             otherStyle={styles.input}
             onChangeText={txt => setPassword(txt)}
+            secureTextEntry={true}
           />
 
           <TouchableOpacity style={styles.btn} onPress={onLogin}>
