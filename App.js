@@ -1,8 +1,8 @@
-import {Alert, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import {Alert} from 'react-native';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigation from './src/navigation/AppNavigation';
-import UserAuthProvider, {UserAuthContext} from './src/context/authContext';
+import UserAuthProvider from './src/context/authContext';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import {saveData} from './src/components/CommonStorage';

@@ -161,7 +161,7 @@ const CreateProject = () => {
 
   const renderFiles = ({item, index}) => {
     return (
-      <TouchableOpacity key={index} style={styles.fileView}>
+      <TouchableOpacity key={index} style={styles.fileView} activeOpacity={0.8}>
         <Text numberOfLines={1}>Name : {item.name}</Text>
         <Text>size : {item.size}</Text>
       </TouchableOpacity>

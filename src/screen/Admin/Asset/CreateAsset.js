@@ -78,7 +78,7 @@ const CreateAsset = () => {
       formData.append('brand', brand);
       formData.append('description', description);
 
-      const res = await httpService({
+      await httpService({
         method: 'post',
         url: '/asset/create',
         data: formData,
@@ -89,7 +89,7 @@ const CreateAsset = () => {
         type: 'success',
         text1: 'Asset created successfully',
       });
-      goBack()
+      goBack();
     } catch (error) {
       console.error('Error creating asset:', error);
 
@@ -105,14 +105,20 @@ const CreateAsset = () => {
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground source={bg} style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.leftBtn} onPress={goBack}>
+          <TouchableOpacity
+            style={styles.leftBtn}
+            onPress={goBack}
+            activeOpacity={0.8}>
             <AntDesign name="left" color={Colors.white} size={scale(18)} />
           </TouchableOpacity>
           <Text style={styles.heading}>Create Assets</Text>
         </View>
 
         <ScrollView style={styles.wrapper}>
-          <TouchableOpacity style={styles.profileImg} onPress={openCamera}>
+          <TouchableOpacity
+            style={styles.profileImg}
+            onPress={openCamera}
+            activeOpacity={0.8}>
             {imgObj?.assets[0] == null ? (
               <FontAwesome name="file-image-o" size={scale(26)} />
             ) : (

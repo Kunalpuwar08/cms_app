@@ -42,6 +42,27 @@ const ListTimesheet = () => {
     );
   };
 
+  const listEmptyCard = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          height: 300,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            fontFamily: Fonts.AntaRegular,
+            color: Colors.white,
+            fontSize: scale(18),
+          }}>
+          Timesheet List is Empty
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground source={bg} style={styles.container}>
@@ -51,10 +72,12 @@ const ListTimesheet = () => {
           data={listData}
           renderItem={renderCard}
           keyExtractor={(i, e) => e}
+          ListEmptyComponent={listEmptyCard}
         />
 
         <TouchableOpacity
           style={styles.floatBtn}
+          activeOpacity={0.8}
           onPress={() => navigation.navigate('CreateTimesheet')}>
           <AntDesign name="plus" color={Colors.white} size={scale(20)} />
         </TouchableOpacity>

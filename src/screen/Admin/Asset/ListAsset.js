@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Text, 
-  View, 
-  Image, 
-  FlatList, 
-  StyleSheet, 
-  SafeAreaView, 
-  ImageBackground, 
-  TouchableOpacity, 
-  Modal 
+import React, {useEffect, useState, useMemo, useCallback} from 'react';
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
-import { bg } from '../../../assets';
-import { scale } from '../../../utils/Matrix';
-import { Colors } from '../../../utils/Colors';
-import { Fonts } from '../../../utils/Fonts';
-import httpService from '../../../utils/https';
-import { useNavigation } from '@react-navigation/native';
+import {bg} from '../../../assets';
+import {scale} from '../../../utils/Matrix';
+import {Colors} from '../../../utils/Colors';
+import {Fonts} from '../../../utils/Fonts';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CDropdown from '../../../components/CDropdown';
-import { assignAssetTo, listAssetAdmin, listEmpName } from '../../../apis';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {assignAssetTo, listAssetAdmin, listEmpName} from '../../../apis';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
+import CHeader from '../../../components/CHeader';
 
 const ListAsset = () => {
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const ListAsset = () => {
   });
 
   const assetListQuery = useQuery({
-    queryKey: ['assetList'],
+    queryKey: ['adminassetList'],
     queryFn: listAssetAdmin,
   });
 
@@ -79,27 +79,55 @@ const ListAsset = () => {
     getEmpName();
   }, [empListQuery.isLoading]);
 
-  const goBack = () => {
-    navigation.goBack();
+  const fetchData = async () => {
+    await assetListQuery.refetch();
+    setState(prevState => ({
+      ...prevState,
+      assetList: assetListQuery.data?.data?.assignedAssets || [],
+    }));
   };
 
-  const renderCard = ({ item, index }) => {
+  const memoizedFetchData = useMemo(() => fetchData, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      memoizedFetchData();
+    }, []),
+  );
+
+  const assignAsset = val => {
+    const data = {
+      assetId: state.selectedAsset?._id,
+      userId: val?.userId,
+      userName: val?.value,
+    };
+    assignAssetMutation.mutate(data);
+  };
+
+  const renderCard = ({item, index}) => {
+    console.log(item, 'item');
     return (
-      <TouchableOpacity 
-        style={styles.card} 
-        key={index} 
-        onPress={() => setState(prevState => ({
-          ...prevState,
-          isOpen: true,
-          selectedAsset: item,
-        }))}>
-        <Image source={{ uri: item.imageUrl }} style={styles.assetImg} />
-        <View style={{ width: '55%' }}>
-          <Text style={styles.txt} numberOfLines={1}>Name: {item.name}</Text>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.card}
+        key={index}
+        onPress={() =>
+          setState(prevState => ({
+            ...prevState,
+            isOpen: true,
+            selectedAsset: item,
+          }))
+        }>
+        <Image source={{uri: item.imageUrl}} style={styles.assetImg} />
+        <View style={{width: '55%'}}>
+          <Text style={styles.txt} numberOfLines={1}>
+            Name: {item.name}
+          </Text>
           <Text style={styles.txt}>Desc: {item.description}</Text>
           <Text style={styles.txt}>Brand: {item.brand}</Text>
           {item.assignTo == null && (
             <TouchableOpacity
+              activeOpacity={0.8}
               style={styles.btn}
               onPress={() => {
                 setState(prevState => ({
@@ -116,32 +144,20 @@ const ListAsset = () => {
     );
   };
 
-  const assignAsset = val => {
-    const data = {
-      assetId: state.selectedAsset?._id,
-      userId: val?.userId,
-      userName: val?.value,
-    };
-    assignAssetMutation.mutate(data);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.bgImg}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.leftBtn} onPress={goBack}>
-            <AntDesign name="left" color={Colors.white} size={scale(18)} />
-          </TouchableOpacity>
-          <Text style={styles.heading}>List Assets</Text>
-        </View>
+        <CHeader title={'List Assets'} />
 
         <FlatList
           data={state.assetList}
           renderItem={renderCard}
           keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={{paddingBottom: scale(60)}}
         />
 
         <TouchableOpacity
+          activeOpacity={0.8}
           style={styles.floatBtn}
           onPress={() => navigation.navigate('CreateAsset')}>
           <AntDesign name="plus" size={scale(18)} color={Colors.white} />
@@ -150,9 +166,7 @@ const ListAsset = () => {
         <Modal transparent visible={state.isOpen}>
           <View style={styles.modalWrapper}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalText}>
-                Assign Asset To Employee
-              </Text>
+              <Text style={styles.modalText}>Assign Asset To Employee</Text>
               <CDropdown
                 data={state.empNameData}
                 onValueChange={val => val}
@@ -160,12 +174,15 @@ const ListAsset = () => {
               />
 
               <TouchableOpacity
+                activeOpacity={0.8}
                 style={styles.closeBtn}
-                onPress={() => setState(prevState => ({
-                  ...prevState,
-                  isOpen: false,
-                  selectedAsset: null,
-                }))}>
+                onPress={() =>
+                  setState(prevState => ({
+                    ...prevState,
+                    isOpen: false,
+                    selectedAsset: null,
+                  }))
+                }>
                 <AntDesign name="close" size={scale(20)} color={Colors.black} />
               </TouchableOpacity>
             </View>

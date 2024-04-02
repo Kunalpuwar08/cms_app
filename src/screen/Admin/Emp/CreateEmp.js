@@ -1,12 +1,4 @@
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import {Image, StyleSheet, ScrollView, ImageBackground} from 'react-native';
 import React, {useState} from 'react';
 import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
@@ -15,7 +7,6 @@ import CInput from '../../../components/CInput';
 import {bg, createEmpImg} from '../../../assets';
 import CButton from '../../../components/CButton';
 import {useNavigation} from '@react-navigation/native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useMutation} from '@tanstack/react-query';
 import {createEmpCall} from '../../../apis';
 import CHeader from '../../../components/CHeader';
@@ -39,7 +30,7 @@ const CreateEmp = () => {
     onError: err => {
       console.log(err.data, 'error in api call>>>>>>>>>>>');
       Toast.show({
-        type: 'success',
+        type: 'error',
         text1: err.message,
       });
     },

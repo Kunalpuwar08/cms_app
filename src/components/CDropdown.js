@@ -5,7 +5,7 @@ import {Colors} from '../utils/Colors';
 import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
-const CDropdown = ({data, placeholder, onValueChange, otherStyle,setSelectedItem}) => {
+const CDropdown = ({data, placeholder, onValueChange, otherStyle,setSelectedItem,val}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -22,7 +22,7 @@ const CDropdown = ({data, placeholder, onValueChange, otherStyle,setSelectedItem
         labelField="label"
         valueField="value"
         placeholder={placeholder}
-        value={value}
+        value={val ? val :value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={item => {

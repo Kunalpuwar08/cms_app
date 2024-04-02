@@ -5,7 +5,7 @@ import { Colors } from '../utils/Colors';
 
 const CButton = ({name, onPress,otherStyle}) => {
   return (
-    <TouchableOpacity style={[styles.btn,otherStyle]} onPress={onPress}>
+    <TouchableOpacity style={[styles.btn,otherStyle]} onPress={onPress} activeOpacity={0.8}>
       <Text style={styles.btnTxt}>{name}</Text>
     </TouchableOpacity>
   );

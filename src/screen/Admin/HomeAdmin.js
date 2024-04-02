@@ -7,28 +7,29 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
 import {Fonts} from '../../utils/Fonts';
 import {scale} from '../../utils/Matrix';
 import {Colors} from '../../utils/Colors';
 import {
+  bg,
   AssetIcon,
   LeaveIcon,
   ProfileIcon,
   ProjectIcon,
-  bg,
   employeeImg,
 } from '../../assets';
+import {dashboardCall, logoutCall} from '../../apis';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import React, {useEffect, useState} from 'react';
+import CHeaderCard from '../../components/CHeaderCard';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import CHeaderCard from '../../components/CHeaderCard';
-import {dashboardCall} from '../../apis';
-import {useQuery} from '@tanstack/react-query';
+import {deleteData, getData} from '../../components/CommonStorage';
+import Toast from 'react-native-toast-message';
 
 const HomeAdmin = () => {
   const navigation = useNavigation();
-
   const [listData, setListData] = useState([]);
 
   const dashboardQuery = useQuery({
@@ -36,11 +37,39 @@ const HomeAdmin = () => {
     queryFn: dashboardCall,
   });
 
+  const logoutMutation = useMutation({
+    mutationFn: logoutCall,
+    onSuccess: async data => {
+      console.log('Succes Data :', data);
+      Toast.show({
+        type: 'success',
+        text1: 'Logout Successful',
+      });
+
+      await deleteData('userToken');
+      await deleteData('userData');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Auth'}],
+      });
+    },
+    onError: err => {
+      Toast.show({
+        type: 'success',
+        text1: err.message,
+      });
+    },
+  });
+
   useEffect(() => {
     setListData(dashboardQuery.data?.data);
   }, [dashboardQuery?.isLoading]);
 
-  console.log(listData);
+  const logout = async () => {
+    const sData = await getData('userData');
+    const data = {userId: sData._id, userType: sData.role};
+    logoutMutation.mutate(data);
+  };
 
   return (
     <SafeAreaView style={styles.main}>
@@ -49,10 +78,11 @@ const HomeAdmin = () => {
         <View style={styles.header}>
           <Text style={styles.title}>CMS</Text>
           <View style={styles.headerBtnContainer}>
-            <TouchableOpacity style={styles.headerBtn}>
+            <TouchableOpacity style={styles.headerBtn} onPress={logout} activeOpacity={0.8}>
               <AntDesign name="logout" size={scale(20)} color={Colors.white} />
             </TouchableOpacity>
             <TouchableOpacity
+            activeOpacity={0.8}
               style={styles.headerBtn}
               onPress={() => navigation.navigate('Notification')}>
               <Ionicons

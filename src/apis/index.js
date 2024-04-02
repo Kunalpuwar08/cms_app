@@ -173,3 +173,27 @@ export const dashboardCall = async () => {
   });
   return res;
 };
+
+export const listTodoCall = async () => {
+  const res = await httpService({
+    method: 'get',
+    url: `/todo/list-todo`,
+  });
+  return res;
+};
+
+export const createTodo = async data => {
+  await httpService({
+    method: 'post',
+    url: `/todo/create`,
+    data: data,
+  });
+};
+
+export const updateTodoCall = async data => {
+  await httpService({
+    method: 'patch',
+    url: `/todo/update/${data?.id}`,
+    data: data?.data,
+  });
+};

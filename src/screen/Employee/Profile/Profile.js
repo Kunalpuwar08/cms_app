@@ -117,7 +117,7 @@ const Profile = () => {
       <ImageBackground source={bg} style={{flex: 1}}>
         {/* header */}
         <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={onBack}>
+          <TouchableOpacity onPress={onBack} activeOpacity={0.8}>
             <AntDesign name={'left'} size={scale(18)} color={Colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile</Text>
@@ -165,6 +165,7 @@ const Profile = () => {
           />
 
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.btn(Colors.purple)}
             onPress={onToggle}>
             <Text style={styles.btnTxt(Colors.white)}>
@@ -172,7 +173,7 @@ const Profile = () => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn(Colors.white)} onPress={onLogout}>
+          <TouchableOpacity style={styles.btn(Colors.white)} onPress={onLogout} activeOpacity={0.8}>
             <Text style={styles.btnTxt(Colors.black)}>Logout</Text>
           </TouchableOpacity>
         </ScrollView>

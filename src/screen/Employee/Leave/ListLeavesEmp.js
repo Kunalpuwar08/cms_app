@@ -15,6 +15,7 @@ import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
 import moment from 'moment';
 import {Fonts} from '../../../utils/Fonts';
+import CHeader from '../../../components/CHeader';
 
 const ListLeavesEmp = () => {
   const emplistQuery = useQuery({
@@ -24,7 +25,7 @@ const ListLeavesEmp = () => {
 
   const renderCard = ({item, index}) => {
     return (
-      <TouchableOpacity style={styles.card} key={index}>
+      <TouchableOpacity style={styles.card} key={index} activeOpacity={0.8}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View
             style={{
@@ -51,14 +52,36 @@ const ListLeavesEmp = () => {
     );
   };
 
+  const listEmptyCard = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          height: 300,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            fontFamily: Fonts.AntaRegular,
+            color: Colors.white,
+            fontSize: scale(18),
+          }}>
+          History List is Empty
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground source={bg} style={{flex: 1}}>
-        <Text style={styles.title}>History</Text>
+        <CHeader title={'History'} />
         <FlatList
           data={emplistQuery.data?.data}
           renderItem={renderCard}
           keyExtractor={(i, e) => e}
+          ListEmptyComponent={listEmptyCard}
         />
       </ImageBackground>
     </SafeAreaView>

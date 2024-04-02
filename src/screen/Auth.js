@@ -71,7 +71,7 @@ const Auth = () => {
             secureTextEntry={true}
           />
 
-          <TouchableOpacity style={styles.btn} onPress={onLogin}>
+          <TouchableOpacity style={styles.btn} onPress={onLogin} activeOpacity={0.8}>
             <Text style={styles.btnTxt}>Login</Text>
           </TouchableOpacity>
 

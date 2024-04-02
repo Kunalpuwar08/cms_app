@@ -9,6 +9,7 @@ const CHeaderCard = ({name, navigate, source}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+    activeOpacity={0.8}
       style={styles.cardWrapper}
       onPress={() => navigation.navigate(navigate)}>
       {source && <Image source={source} style={styles.card} />}

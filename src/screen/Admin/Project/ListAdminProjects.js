@@ -37,7 +37,7 @@ const ListAdminProjects = () => {
 
   const renderCard = ({item, index}) => {
     return (
-      <TouchableOpacity style={styles.card} key={index}>
+      <TouchableOpacity style={styles.card} key={index} activeOpacity={0.8}>
         <View>
           <Text style={styles.heading}>{item.name}</Text>
           <Text style={styles.description}>{item.description}</Text>
@@ -69,6 +69,7 @@ const ListAdminProjects = () => {
 
         <TouchableOpacity
           style={styles.floatBtn}
+          activeOpacity={0.8}
           onPress={() => navigation.navigate('CreateProject')}>
           <AntDesign name="plus" color={Colors.white} size={scale(20)} />
         </TouchableOpacity>

@@ -91,7 +91,7 @@ const ChangePassword = () => {
           secureTextEntry={true}
         />
 
-        <TouchableOpacity style={styles.btn} onPress={onPasswordChange}>
+        <TouchableOpacity style={styles.btn} onPress={onPasswordChange} activeOpacity={0.8}>
           <Text style={styles.btnTxt}>Change</Text>
         </TouchableOpacity>
       </ScrollView>

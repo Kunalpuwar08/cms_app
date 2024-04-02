@@ -22,6 +22,8 @@ import ListAssets from '../screen/Employee/Asset/ListAssets';
 import CreateTimesheet from '../screen/Employee/Timesheet/CreateTimesheet';
 import ListTimesheet from '../screen/Employee/Timesheet/ListTimesheet';
 import ListAdminProjects from '../screen/Admin/Project/ListAdminProjects';
+import CreateTodo from '../screen/Employee/Todo/CreateTodo';
+import ViewTodo from '../screen/Employee/Todo/ViewTodo';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +37,10 @@ const AppNavigation = () => {
         <Stack.Screen name='EmployeeHome' component={HomeEmp} />
         <Stack.Screen name='Profile' component={Profile} />
         <Stack.Screen name='Notification' component={Notification} />
+        {/* Todo */}
         <Stack.Screen name='TodoList' component={TodoList} />
+        <Stack.Screen name='CreateTodo' component={CreateTodo} />
+        <Stack.Screen name='ViewTodo' component={ViewTodo} />
         {/* Leave */}
         <Stack.Screen name='AdminLeave' component={AdminLeave} />
         <Stack.Screen name='EmployeeLeave' component={EmpLeave} />

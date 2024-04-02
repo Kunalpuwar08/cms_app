@@ -5,7 +5,6 @@ import {
   ScrollView,
   SafeAreaView,
   ImageBackground,
-  TouchableOpacity,
   Image,
 } from 'react-native';
 import {
@@ -71,9 +70,7 @@ const HomeEmp = () => {
 
         {/* Tools */}
         <View style={styles.toolsContainer}>
-          {/* <TouchableOpacity> */}
             <Text style={styles.seeAll}>Tools </Text>
-          {/* </TouchableOpacity> */}
         </View>
         <View style={styles.cardContainer}>
           <CommonCard

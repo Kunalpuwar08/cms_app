@@ -13,6 +13,7 @@ const CDatePicker = ({placeholder, onDateSelect, otherStyle}) => {
     <>
       <TouchableOpacity
         onPress={() => setOpen(true)}
+        activeOpacity={0.8}
         style={[styles.container, otherStyle]}>
         <Text style={styles.date}>
           {date == null ? placeholder : moment(date).format('ll')}

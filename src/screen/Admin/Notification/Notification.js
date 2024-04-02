@@ -28,7 +28,7 @@ const Notification = () => {
 
   const renderNoti = useCallback(({item, index}) => {
     return (
-      <TouchableOpacity style={styles.card} key={index}>
+      <TouchableOpacity style={styles.card} key={index} activeOpacity={0.8}>
         <Text style={styles.title}>{item?.title}</Text>
         <Text style={styles.body} numberOfLines={1}>
           {item?.body}
@@ -42,7 +42,7 @@ const Notification = () => {
       <ImageBackground source={bg} style={styles.imageContainer}>
         {/* Header */}
         <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={onBack}>
+          <TouchableOpacity onPress={onBack} activeOpacity={0.8}>
             <AntDesign name={'left'} size={scale(18)} color={Colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Notifications</Text>

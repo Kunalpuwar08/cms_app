@@ -28,10 +28,6 @@ const ListProject = () => {
   });
 
   useEffect(() => {
-    console.log(
-      adminListQuery.data?.data?.projects,
-      'adminListQuery.data?.data>>>>>>>>>',
-    );
     setListData(adminListQuery.data?.data?.projects);
   }, [adminListQuery?.isLoading]);
 
@@ -41,6 +37,7 @@ const ListProject = () => {
     return (
       <TouchableOpacity
         style={styles.card}
+        activeOpacity={0.8}
         key={index}
         onPress={() => onCardPress(item)}>
         <View>
@@ -61,6 +58,29 @@ const ListProject = () => {
       </TouchableOpacity>
     );
   };
+
+  const listEmptyCard = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          height: 300,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            fontFamily: Fonts.AntaRegular,
+            color: Colors.white,
+            fontSize: scale(18),
+          }}>
+          Project Section is Empty
+        </Text>
+      </View>
+    );
+  };
+
+  
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground source={bg} style={styles.container}>
@@ -70,6 +90,7 @@ const ListProject = () => {
             data={listData}
             renderItem={renderCard}
             keyExtractor={i => i.id}
+            ListEmptyComponent={listEmptyCard}
           />
         </View>
       </ImageBackground>

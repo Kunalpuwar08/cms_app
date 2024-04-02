@@ -12,7 +12,7 @@ const CHeader = ({title, isRight}) => {
 
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity style={styles.backBtn} onPress={onBack}>
+      <TouchableOpacity style={styles.backBtn} onPress={onBack} activeOpacity={0.8}>
         <AntDesign name={'left'} size={scale(18)} color={Colors.white} />
         <Text style={styles.headerTitle}>{title}</Text>
       </TouchableOpacity>

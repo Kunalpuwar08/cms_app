@@ -6,7 +6,7 @@ import {Fonts} from '../utils/Fonts';
 
 const CommonCard = ({onPress, name,source}) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
       <Image source={source} style={styles.avtar} />
       <Text style={styles.card_name}>{name}</Text>
     </TouchableOpacity>

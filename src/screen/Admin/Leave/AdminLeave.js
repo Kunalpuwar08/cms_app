@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import {bg} from '../../../assets';
 import {scale} from '../../../utils/Matrix';
 import {Colors} from '../../../utils/Colors';
 import {Fonts} from '../../../utils/Fonts';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {listLeaves, updateLeaveRequest} from '../../../apis';
 import CLoader from '../../../components/CLoader';
@@ -35,6 +35,11 @@ const AdminLeave = () => {
     mutationFn: updateLeaveRequest,
     onSuccess: data => {
       console.log('Succes Data :', data);
+      Toast.show({
+        type: 'success',
+        text1: 'Request update successfully',
+      });
+      // empQuery.refetch()
     },
   });
 
@@ -58,7 +63,15 @@ const AdminLeave = () => {
 
   useEffect(() => {
     getListRequest();
-  }, []);
+  }, [empQuery.isLoading]);
+
+  const memoizedFetchData = useMemo(() => getListRequest, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      memoizedFetchData();
+    }, []),
+  );
 
   const renderCard = useCallback(({item, index}) => {
     return (
@@ -75,11 +88,13 @@ const AdminLeave = () => {
         </View>
         <View style={styles.btnContainer}>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.btn(Colors.red)}
             onPress={() => updateLeave(item, 'reject')}>
             <Text style={styles.btnTxt}>Reject</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.btn(Colors.blue)}
             onPress={() => updateLeave(item, 'approve')}>
             <Text style={styles.btnTxt}>Approve</Text>
@@ -116,7 +131,7 @@ const AdminLeave = () => {
     <ImageBackground source={bg} style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={goBack}>
+        <TouchableOpacity onPress={goBack} activeOpacity={0.8}>
           <AntDesign name="left" size={scale(18)} color={Colors.white} />
         </TouchableOpacity>
         <Text style={styles.headerTxt}>Leave Management</Text>
@@ -124,23 +139,26 @@ const AdminLeave = () => {
 
       <View style={styles.toggleBtnContainer}>
         <TouchableOpacity
+          activeOpacity={0.8}
           style={styles.toggleBtn(activeState == 0 ? 1 : 0)}
           onPress={() => setActiveState(0)}>
           <Text style={styles.toggleBtnTxt}>Pending</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          activeOpacity={0.8}
           style={styles.toggleBtn(activeState == 1 ? 1 : 0)}
           onPress={() => setActiveState(1)}>
           <Text style={styles.toggleBtnTxt}>Completed</Text>
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={{flex: 1}}>
         {activeState === 0 ? (
           <FlatList
             data={pendingData}
             renderItem={renderCard}
             keyExtractor={(item, index) => item.id}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <FlatList

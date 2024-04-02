@@ -73,11 +73,11 @@ const EmpLeave = () => {
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground style={styles.container} source={bg}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={onBack}>
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={onBack} activeOpacity={0.8}>
             <AntDesign name={'left'} size={scale(18)} color={Colors.white} />
             <Text style={styles.headerTitle}>Employee Leave</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('EmployeeLeaveList')}>
+          <TouchableOpacity onPress={() => navigation.navigate('EmployeeLeaveList')} activeOpacity={0.8}>
             <AntDesign name='ellipsis1' size={scale(18)} color={Colors.white} />
           </TouchableOpacity>
         </View>
@@ -108,7 +108,7 @@ const EmpLeave = () => {
               onChangeText={txt => setReason(txt)}
             />
 
-            <TouchableOpacity style={styles.btn} onPress={applyLeave}>
+            <TouchableOpacity style={styles.btn} onPress={applyLeave} activeOpacity={0.8}>
               <Text style={styles.btnTxt}>Apply</Text>
             </TouchableOpacity>
           </View>
